@@ -1,7 +1,7 @@
 import React from 'react'
 import Leap from 'leapjs'
 import PropTypes from 'prop-types'
-import Immutable from 'immutable'
+// import Immutable from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import DuckImage from '../assets/Duck.jpg'
@@ -10,7 +10,6 @@ import './HomeView.scss'
 
 export class HomeView extends React.Component {
   state = {
-    frames : [],
     frame: {}
   }
 
@@ -34,17 +33,12 @@ export class HomeView extends React.Component {
       },
       frame: (frame) => {
         if (this.props.isRecording) {
-          const { frames } = this.state
           const convertedFrame = this.convertFrame(frame)
-          frames.push(convertedFrame)
-
-          this.setState({ frame: convertedFrame, frames })
-        } else if (this.state.frames.length) {
-          const { frames } = this.state
-          console.log('test', frames)
-          this.setState({ frames: [] })
-
-          this.sendPredict(frames)
+          this.props.addFrame(convertedFrame)
+          this.setState({ frame: convertedFrame })
+        } else if (this.props.frames.size) {
+          this.sendPredict()
+          this.props.clearFrames()
         }
       }
     })
@@ -83,7 +77,8 @@ export class HomeView extends React.Component {
     return outFrame
   }
 
-  sendPredict (frames) {
+  sendPredict () {
+    const { frames } = this.props
     console.log('test', frames)
     fetch('http://localhost:5000/predict', {
       method: 'POST',
@@ -107,7 +102,6 @@ export class HomeView extends React.Component {
 
   render () {
     const { frame } = this.state
-    console.log('test', this.state.frames.length)
     return (
       <div>
         <h4>Welcome!</h4>
@@ -125,7 +119,10 @@ export class HomeView extends React.Component {
 HomeView.propTypes = {
   isRecording: PropTypes.bool,
   result: ImmutablePropTypes.list,
+  frames: ImmutablePropTypes.list,
   updateResult: PropTypes.func,
+  clearFrames: PropTypes.func,
+  addFrame: PropTypes.func,
   toggleLeap: PropTypes.func
 }
 

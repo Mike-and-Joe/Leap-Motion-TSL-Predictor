@@ -6,14 +6,16 @@ import { fromJS, List } from 'immutable'
 // ------------------------------------
 export const TOGGLE = 'leap/TOGGLE'
 export const UPDATE_RESULT = 'leap/UPDATE_RESULT'
-export const CLEAR = 'leap/CLEAR'
+export const ADD_FRAME = 'leap/ADD_FRAME'
+export const CLEAR_FRAMES = 'leap/CLEAR_FRAMES'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const toggleLeap = createAction(TOGGLE)
 export const updateResult = createAction(UPDATE_RESULT)
-export const clearLeap = createAction(CLEAR)
+export const addFrame = createAction(ADD_FRAME)
+export const clearFrames = createAction(CLEAR_FRAMES)
 
 // ------------------------------------
 // Action Handlers
@@ -25,8 +27,11 @@ const ACTION_HANDLERS = {
   [UPDATE_RESULT]: (state, { payload }) => {
     return state.set('result', payload ? fromJS(payload) : List())
   },
-  [CLEAR]: (state, { payload }) => {
-    return initialState
+  [ADD_FRAME]: (state, { payload }) => {
+    return state.update('frames', frames => frames.push(payload))
+  },
+  [CLEAR_FRAMES]: (state, { payload }) => {
+    return state.set('frames', initialState.get('frames'))
   }
 }
 
@@ -35,6 +40,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = fromJS({
   isRecording: false,
+  frames: [],
   result: []
 })
 

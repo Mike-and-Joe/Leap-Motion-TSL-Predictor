@@ -30,7 +30,6 @@ export const sendPredict = () => {
     const frames = getState().get('leap').get('frames')
     dispatch(clearFrames())
 
-    console.log('test', frames)
     fetch('http://localhost:5000/predict', {
       method: 'POST',
       headers: {

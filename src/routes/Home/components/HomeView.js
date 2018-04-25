@@ -1,6 +1,7 @@
 import React from 'react'
 import Leap from 'leapjs'
 import PropTypes from 'prop-types'
+import { map, capitalize } from 'lodash'
 // import Immutable from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
@@ -84,6 +85,7 @@ export class HomeView extends React.Component {
         <h4>Result : {JSON.stringify(this.props.result.toJS())}</h4>
         <p>frame id: {frame.id}</p>
         <p>hands: {frame.hands && Object.keys(frame.hands).length }</p>
+        <p>hands: [ {frame.hands && map(frame.hands, (hand, key) => capitalize(key)).join(', ')} ]</p>
         <p>frame: {JSON.stringify(frame) }</p>
       </div>
     )

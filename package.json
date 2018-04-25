@@ -24,6 +24,7 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "leapjs": "^0.6.4",
+    "lodash": "^4.17.10",
     "object-assign": "^4.1.1",
     "promise": "^7.1.1",
     "prop-type": "^0.0.1",

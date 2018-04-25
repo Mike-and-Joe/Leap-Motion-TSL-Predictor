@@ -36,9 +36,6 @@ export class HomeView extends React.Component {
           const convertedFrame = this.convertFrame(frame)
           this.props.addFrame(convertedFrame)
           this.setState({ frame: convertedFrame })
-        } else if (this.props.frames.size) {
-          this.sendPredict()
-          this.props.clearFrames()
         }
       }
     })
@@ -77,29 +74,6 @@ export class HomeView extends React.Component {
     return outFrame
   }
 
-  sendPredict () {
-    const { frames } = this.props
-    console.log('test', frames)
-    fetch('http://localhost:5000/predict', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        'leap_data': [
-          frames
-        ]
-      })
-    })
-    .then(response => response.json())
-    .then(response => {
-      console.log('result: ', response)
-      this.props.updateResult(response)
-    })
-    .catch((err) => console.error('prediction error: ', err))
-  }
-
   render () {
     const { frame } = this.state
     return (
@@ -119,9 +93,6 @@ export class HomeView extends React.Component {
 HomeView.propTypes = {
   isRecording: PropTypes.bool,
   result: ImmutablePropTypes.list,
-  frames: ImmutablePropTypes.list,
-  updateResult: PropTypes.func,
-  clearFrames: PropTypes.func,
   addFrame: PropTypes.func,
   toggleLeap: PropTypes.func
 }

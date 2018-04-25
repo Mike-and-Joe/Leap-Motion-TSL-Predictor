@@ -12,10 +12,45 @@ export const CLEAR_FRAMES = 'leap/CLEAR_FRAMES'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const toggleLeap = createAction(TOGGLE)
 export const updateResult = createAction(UPDATE_RESULT)
 export const addFrame = createAction(ADD_FRAME)
 export const clearFrames = createAction(CLEAR_FRAMES)
+
+export const toggleLeap = () => {
+  return (dispatch, getState) => {
+    if (getState().get('leap').get('isRecording')) {
+      dispatch(sendPredict())
+    }
+    dispatch(createAction(TOGGLE)())
+  }
+}
+
+export const sendPredict = () => {
+  return (dispatch, getState) => {
+    const frames = getState().get('leap').get('frames')
+    dispatch(clearFrames())
+
+    console.log('test', frames)
+    fetch('http://localhost:5000/predict', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'leap_data': [
+          frames.toJS()
+        ]
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log('result: ', response)
+      dispatch(updateResult(response))
+    })
+    .catch((err) => console.error('prediction error: ', err))
+  }
+}
 
 // ------------------------------------
 // Action Handlers

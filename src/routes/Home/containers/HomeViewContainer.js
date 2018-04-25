@@ -2,19 +2,16 @@ import { connect } from 'react-redux'
 
 import HomeView from '../components/HomeView'
 
-import { toggleLeap, updateResult, addFrame, clearFrames } from '../modules/leap'
+import { toggleLeap, addFrame } from '../modules/leap'
 
 const mapStateToProps = (state, ownProps) => ({
   isRecording: state.get('leap').get('isRecording'),
-  result: state.get('leap').get('result'),
-  frames: state.get('leap').get('frames')
+  result: state.get('leap').get('result')
 })
 
 const mapDispatchToProps = {
   toggleLeap,
-  updateResult,
-  addFrame,
-  clearFrames
+  addFrame
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView)

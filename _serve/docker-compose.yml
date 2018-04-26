@@ -1,0 +1,20 @@
+version: '3'
+services:
+  server:
+    build: ./back
+    expose:
+      - 5000
+    ports:
+     - "5000:5000"
+    volumes:
+     - ./back:/back
+  web:
+    build: ./front
+    expose:
+      - 3000
+    ports:
+     - "80:3000"
+    volumes:
+     - ./front:/front
+    links:
+     - server

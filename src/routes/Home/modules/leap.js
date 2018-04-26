@@ -29,8 +29,9 @@ export const sendPredict = () => {
   return (dispatch, getState) => {
     const frames = getState().get('leap').get('frames')
     dispatch(clearFrames())
+    const BASE_URL = __PROD__ ? 'http://35.196.139.78:5000' : 'http://localhost:5000'
 
-    fetch('http://localhost:5000/predict', {
+    fetch(BASE_URL + '/predict', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
